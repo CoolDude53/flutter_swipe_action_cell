@@ -404,6 +404,8 @@ class SwipeActionCellState extends State<SwipeActionCell> with TickerProviderSta
     ignorePointerSubscription?.cancel();
     changeEditingModeSubscription?.cancel();
     programOpenCellEventSubscription?.cancel();
+    programOpenCellEventSubscription?.cancel();
+
     super.dispose();
   }
 
