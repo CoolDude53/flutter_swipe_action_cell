@@ -334,29 +334,6 @@ class SwipeActionCellState extends State<SwipeActionCell> with TickerProviderSta
         return;
       }
 
-      CompletionHandler completionHandler = (delete) async {
-        if (delete) {
-          SwipeActionStore.getInstance().bus.fire(IgnorePointerEvent(ignore: true));
-          if (widget.firstActionWillCoverAllSpaceOnDeleting) {
-            SwipeActionStore.getInstance().bus.fire(PullLastButtonToCoverCellEvent(key: widget.key!));
-          }
-
-          /// wait animation to complete
-          await deleteWithAnim();
-        } else {
-          lastItemOut = false;
-          _closeNestedAction();
-
-          /// wait animation to complete
-          await closeWithAnim();
-        }
-      };
-
-      if (whenTrailingActionShowing && widget.trailingActions != null) {
-        widget.trailingActions?[0].onTap(completionHandler);
-      } else if (whenLeadingActionShowing && widget.leadingActions != null) {
-        widget.leadingActions?[0].onTap(completionHandler);
-      }
       SwipeActionStore.getInstance().bus.fire(IgnorePointerEvent(ignore: true));
       SwipeActionStore.getInstance().bus.fire(CellFingerOpenEvent(key: widget.key!));
       _open(trailing: event.trailing, animated: false);
@@ -367,6 +344,12 @@ class SwipeActionCellState extends State<SwipeActionCell> with TickerProviderSta
 
       /// wait animation to complete
       await deleteWithAnim();
+
+      if (widget.trailingActions != null) {
+        widget.trailingActions?[0].onTap((_) async {});
+      } else if (widget.leadingActions != null) {
+        widget.leadingActions?[0].onTap((_) async {});
+      }
     });
 
     ignorePointerSubscription = SwipeActionStore.getInstance().bus.on<IgnorePointerEvent>().listen((event) {
