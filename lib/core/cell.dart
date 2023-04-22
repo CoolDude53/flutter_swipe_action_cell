@@ -345,9 +345,9 @@ class SwipeActionCellState extends State<SwipeActionCell> with TickerProviderSta
       /// wait animation to complete
       await deleteWithAnim();
 
-      if (widget.trailingActions != null) {
+      if (event.trailing && widget.trailingActions != null) {
         widget.trailingActions?[0].onTap((_) async {});
-      } else if (widget.leadingActions != null) {
+      } else if (!event.trailing && widget.leadingActions != null) {
         widget.leadingActions?[0].onTap((_) async {});
       }
     });
@@ -387,7 +387,7 @@ class SwipeActionCellState extends State<SwipeActionCell> with TickerProviderSta
     ignorePointerSubscription?.cancel();
     changeEditingModeSubscription?.cancel();
     programOpenCellEventSubscription?.cancel();
-    programOpenCellEventSubscription?.cancel();
+    programOpenAndDeleteCellEventSubscription?.cancel();
 
     super.dispose();
   }
