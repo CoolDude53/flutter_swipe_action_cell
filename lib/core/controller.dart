@@ -105,6 +105,17 @@ class SwipeActionController {
         ));
   }
 
+  void openAndDeleteCellAt({
+    required int index,
+    required bool trailing,
+  }) {
+    SwipeActionStore.getInstance().bus.fire(CellProgramOpenAndDeleteEvent(
+          index: index,
+          trailing: trailing,
+          controller: this,
+        ));
+  }
+
   /// You can call this method to close all opening cell without passing controller into cell
   ///
   /// 你可以不把controller传入cell就可以直接调用这个方法
@@ -112,9 +123,7 @@ class SwipeActionController {
   void closeAllOpenCell() {
     //Send a CellFingerOpenEvent with UniqueKey,so all opening cell don't have this key
     //so all of opening cell will close
-    SwipeActionStore.getInstance()
-        .bus
-        .fire(CellFingerOpenEvent(key: UniqueKey()));
+    SwipeActionStore.getInstance().bus.fire(CellFingerOpenEvent(key: UniqueKey()));
   }
 
   /// Select a cell (You must pass [SwipeActionCell.index] attr to your [SwipeActionCell]
@@ -128,8 +137,7 @@ class SwipeActionController {
     indexPaths.forEach((element) {
       selectedSet.add(element);
     });
-    selectedIndexPathsChangeCallback?.call(
-        indexPaths, true, selectedSet.length);
+    selectedIndexPathsChangeCallback?.call(indexPaths, true, selectedSet.length);
     SwipeActionStore.getInstance().bus.fire(CellSelectedEvent(selected: true));
   }
 
@@ -145,8 +153,7 @@ class SwipeActionController {
     indexPaths.forEach((element) {
       selectedSet.remove(element);
     });
-    selectedIndexPathsChangeCallback?.call(
-        indexPaths, false, selectedSet.length);
+    selectedIndexPathsChangeCallback?.call(indexPaths, false, selectedSet.length);
     SwipeActionStore.getInstance().bus.fire(CellSelectedEvent(selected: false));
   }
 
@@ -176,15 +183,11 @@ class SwipeActionController {
 
     final List<int> deselectedList = selectedSet.toList();
     selectedSet.clear();
-    selectedIndexPathsChangeCallback?.call(
-        deselectedList, false, selectedSet.length);
+    selectedIndexPathsChangeCallback?.call(deselectedList, false, selectedSet.length);
     SwipeActionStore.getInstance().bus.fire(CellSelectedEvent(selected: false));
   }
 
-  void _fireEditEvent(
-      {required SwipeActionController controller, required bool editing}) {
-    SwipeActionStore.getInstance()
-        .bus
-        .fire(EditingModeEvent(controller: controller, editing: editing));
+  void _fireEditEvent({required SwipeActionController controller, required bool editing}) {
+    SwipeActionStore.getInstance().bus.fire(EditingModeEvent(controller: controller, editing: editing));
   }
 }

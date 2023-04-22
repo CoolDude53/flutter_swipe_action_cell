@@ -22,6 +22,18 @@ class CellProgramOpenEvent {
   final bool trailing;
 }
 
+class CellProgramOpenAndDeleteEvent {
+  const CellProgramOpenAndDeleteEvent({
+    required this.controller,
+    required this.index,
+    required this.trailing,
+  });
+
+  final SwipeActionController controller;
+  final int index;
+  final bool trailing;
+}
+
 class PullLastButtonEvent {
   const PullLastButtonEvent({this.key, required this.isPullingOut});
 
